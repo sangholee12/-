@@ -63,20 +63,24 @@
  - 이후에는 다음 child가 불리고, 최종적으로 부모의 자식 task list head와 자식의 sibling이 동일하면 다 돌았다는 뜻이므로 종료하게 된다.
 
 <p align="center">
-  <img src="http://forum.falinux.com/zbxe/files/attach/images/583/327/553/list_head.PNG" />
+  <img src="http://forum.falinux.com/zbxe/files/attach/images/583/327/553/list_head.PNG" alt="relationship between parent & child" />
+</p>
+
+<p align="right">
+출처 : http://forum.falinux.com/zbxe/index.php?document_srl=553327&mid=lecture_tip
 </p>
 
  - 만일 시스템콜이 불려질 때의 버퍼 사이즈보다 많은 프로세스가 존재한다면, 프로세스 정보를 카피하지는 않고, 개수만 늘려 나중에 돌려준다. 
 
  1.6 Copy to user
- - dfs를 통해 kernel 메모리에 DFS_preoreder로 쓰여진 프로세스 정보를 유저가 넘겨준 user memory에 써주고, 실제 프로세스의 개수를 넘겨주고 끝나게 된다. 
+ - dfs를 통해 kernel 메모리에 DFS pre-oreder로 쓰여진 프로세스 정보를 유저가 넘겨준 user memory에 써주고, 실제 프로세스의 개수를 리턴값으로 넘겨주고 끝나게 된다. 
 
 2. Test
- - 만들어진 시스템콜을 부르고, indent를 하며 프린트한다. 
+ - 만들어진 시스템 콜을 부르고, ptree에서와 마찬가지 방법으로 DFS를 통해 indent를 하며 프린트한다.
  
 #### 3. Investigation of the process tree
 3.1 test 프로그램을 단순히 여러번 불렀을 때.
- test프로세스: pid만 변한다. 나머지는 변하지 않는다 
+- test프로세스: pid만 변한다. 나머지는 변하지 않는다 
  이는 test가 불리고 꺼지면서 test를 부르는 부모 프로세스에서 test를 부를 때 마다, 새로운 프로세스를 생성하기 때문에 변하는 것으로 보인다. 
   
 	 < 		sh,1949,1,959,2066,0,5100
