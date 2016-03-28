@@ -63,10 +63,8 @@
  - 이후에는 다음 child가 불리고, 최종적으로 부모의 자식 task list head와 자식의 sibling이 동일하면 다 돌았다는 뜻이므로 종료하게 된다.
 
 <p align="center">
-  <img src="http://forum.falinux.com/zbxe/files/attach/images/583/327/553/list_head.PNG" width="350"/>
+  <img src="http://forum.falinux.com/zbxe/files/attach/images/583/327/553/list_head.PNG" />
 </p>
-
-<img src="http://forum.falinux.com/zbxe/files/attach/images/583/327/553/list_head.PNG" width="200" height="200"></img>
 
  - 만일 시스템콜이 불려질 때의 버퍼 사이즈보다 많은 프로세스가 존재한다면, 프로세스 정보를 카피하지는 않고, 개수만 늘려 나중에 돌려준다. 
 
