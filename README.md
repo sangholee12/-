@@ -61,6 +61,7 @@
  - aDFS 는 recursive하게 불리는 function 으로 현재 탐색 중인 process 의 정보를 버퍼에 넘겨준다.
  - 버퍼에는 DFS pre-order로 프로세스 정보를 넘겨줘야 하므로, 불려진 프로세스를 쓰고 나면 first_child에 다시 aDFS가 불리게 된다. 
  - 이후에는 다음 child가 불리고, 최종적으로 부모의 자식 task list head와 자식의 sibling이 동일하면 다 돌았다는 뜻이므로 종료하게 된다.
+ - 만일 시스템콜이 불려질 때의 버퍼 사이즈보다 많은 프로세스가 존재한다면, 프로세스 정보를 카피하지는 않고, 개수만 늘려 나중에 돌려준다.
 
 <p align="center">
   <img src="http://forum.falinux.com/zbxe/files/attach/images/583/327/553/list_head.PNG" alt="relationship between parent & child" />
@@ -70,8 +71,6 @@
 출처 : http://forum.falinux.com/zbxe/index.php?document_srl=553327&mid=lecture_tip
 </p>
 
- - 만일 시스템콜이 불려질 때의 버퍼 사이즈보다 많은 프로세스가 존재한다면, 프로세스 정보를 카피하지는 않고, 개수만 늘려 나중에 돌려준다. 
-
  1.6 Copy to user
  - dfs를 통해 kernel 메모리에 DFS pre-oreder로 쓰여진 프로세스 정보를 유저가 넘겨준 user memory에 써주고, 실제 프로세스의 개수를 리턴값으로 넘겨주고 끝나게 된다. 
 
@@ -80,6 +79,7 @@
  
 #### 3. Investigation of the process tree
 3.1 test 프로그램을 단순히 여러번 불렀을 때.
+
 - test프로세스: pid만 변한다. 나머지는 변하지 않는다 
  이는 test가 불리고 꺼지면서 test를 부르는 부모 프로세스에서 test를 부를 때 마다, 새로운 프로세스를 생성하기 때문에 변하는 것으로 보인다. 
   
@@ -100,7 +100,7 @@
 	dcam_flash_thread
 	img_zoom_thread
 	ipp_cmd_1 
-- 추가되는 프로세스는 모두 kthread (pid:2)를 부모로 가진다. 
+- 추가되는 프로세스는 모두 kthreadd(pid:2)를 부모로 가진다. 
   ext4-dio는 마지막 자식으로 존재하다가 카메라를 실행하면서 위의 추가되는 프로세스들이 생성되면서 위의 프로세스들을 sibling으로 가지게된다. 
 - launchpad-loader의 변화: 3.3 에서 다룬다. 
 
@@ -137,5 +137,5 @@
 	여태까지는 어플리케이션을 실행시키면 단순히 프로세스가 생성되는 줄 알았으나, 막상 프로세스 트리를 관찰하여 보니, launchpad를 통해 프로세스가 관리되고 생성되는 것을 알 수 있었다. 
 
 - 어플리케이션 실행
-	카메라 어플리케이션을 실행한 결과, 카메라 프로세스 자체는 launchpad의 자식으로 존재하지만, 이와 같이 실행되는 flash, zoom-in 과 같은 프로세스는 systemd 밑에 있는 것이 아니라, kthreadd 밑에 존재하는 것을 확인 할 수 있었고다.
+	카메라 어플리케이션을 실행한 결과, 카메라 프로세스 자체는 launchpad의 자식으로 존재하지만, 이와 같이 실행되는 flash, zoom-in 과 같은 프로세스는 systemd 밑에 있는 것이 아니라, kthreadd 밑에 존재하는 것을 확인 할 수 있었다.
 	가령, 홈화면을 눌렀을 때, 카메라 프로세스는 존재하고 나머지는 따로 종료되는 것 처럼, 카메라 프로세스 자체와 다르게 관리되는 것을 알 수 있었다. 
