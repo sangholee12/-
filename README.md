@@ -62,7 +62,9 @@
  - 버퍼에는 DFS pre-order로 프로세스 정보를 넘겨줘야 하므로, 불려진 프로세스를 쓰고 나면 first_child에 다시 aDFS가 불리게 된다. 
  - 이후에는 다음 child가 불리고, 최종적으로 부모의 자식 task list head와 자식의 sibling이 동일하면 다 돌았다는 뜻이므로 종료하게 된다.
 
-![list_head_children&sibling](http://forum.falinux.com/zbxe/files/attach/images/583/327/553/list_head.PNG "children&sibling")
+<p align="center">
+  <img src="http://forum.falinux.com/zbxe/files/attach/images/583/327/553/list_head.PNG" width="350"/>
+</p>
 
 <img src="http://forum.falinux.com/zbxe/files/attach/images/583/327/553/list_head.PNG" width="200" height="200"></img>
 
